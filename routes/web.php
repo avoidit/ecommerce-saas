@@ -186,4 +186,33 @@ Route::middleware(['auth:sanctum'])->prefix('api/v1')->name('api.')->group(funct
         Route::put('/{location}', [LocationController::class, 'apiUpdate'])->name('update');
         Route::delete('/{location}', [LocationController::class, 'apiDestroy'])->name('destroy');
     });
+});/*
+|--------------------------------------------------------------------------
+| Settings & Integration Routes
+|--------------------------------------------------------------------------
+|
+| Add these routes to your web.php file
+|
+*/
+
+Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
+    
+    // Settings
+    Route::get('/settings', [App\Http\Controllers\SettingsController::class, 'index'])->name('settings.index');
+    Route::put('/settings/general', [App\Http\Controllers\SettingsController::class, 'updateGeneralSettings'])->name('settings.general.update');
+
+    // Integration Credentials Management
+    Route::prefix('settings/integrations')->name('integrations.')->group(function () {
+        Route::post('/', [App\Http\Controllers\IntegrationController::class, 'store'])->name('store');
+        Route::put('/{credential}', [App\Http\Controllers\IntegrationController::class, 'update'])->name('update');
+        Route::delete('/{credential}', [App\Http\Controllers\IntegrationController::class, 'destroy'])->name('destroy');
+        Route::post('/{credential}/verify', [App\Http\Controllers\IntegrationController::class, 'verifyCredentials'])->name('verify');
+    });
+
+    // eBay OAuth
+    Route::prefix('integrations/ebay')->name('integrations.ebay.')->group(function () {
+        Route::get('/{environment}/callback', [App\Http\Controllers\EbayOAuthController::class, 'callback'])->name('callback');
+        Route::post('/{environment}/disconnect', [App\Http\Controllers\EbayOAuthController::class, 'disconnect'])->name('disconnect');
+        Route::post('/{environment}/refresh', [App\Http\Controllers\EbayOAuthController::class, 'refreshToken'])->name('refresh');
+    });
 });

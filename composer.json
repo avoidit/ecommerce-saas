@@ -14,7 +14,7 @@
         "laravel/sanctum": "^4.0",
         "laravel/telescope": "^5.13",
         "laravel/tinker": "^2.9",
-        "predis/predis": "^3.2",
+        "predis/predis": "^3.3",
         "tightenco/ziggy": "^2.0"
     },
     "require-dev": {
