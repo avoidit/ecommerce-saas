@@ -132,6 +132,9 @@ Route::middleware([
 // ================================
 // API ROUTES (for AJAX/Vue.js calls)
 // ================================
+// Storefront routes
+Route::get('/shop', [App\Http\Controllers\StorefrontController::class, 'index'])->name('shop.index');
+Route::get('/shop/{slug}', [App\Http\Controllers\StorefrontController::class, 'show'])->name('shop.show');
 
 Route::middleware(['auth:sanctum'])->prefix('api/v1')->name('api.')->group(function () {
     
@@ -215,4 +218,6 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::post('/{environment}/disconnect', [App\Http\Controllers\EbayOAuthController::class, 'disconnect'])->name('disconnect');
         Route::post('/{environment}/refresh', [App\Http\Controllers\EbayOAuthController::class, 'refreshToken'])->name('refresh');
     });
+
+
 });
